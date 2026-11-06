@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1280" height="1720" viewBox="0 0 1280 1720"
+     font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F7F8FC"/><stop offset="1" stop-color="#EEF2F9"/>
+    </linearGradient>
+    <linearGradient id="popupBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FBFCFE"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#1B2B45" flood-opacity="0.16"/>
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1B2B45" flood-opacity="0.10"/>
+    </filter>
+
+    <!-- 肥鱼娘头像（简化示意：最终以 t3 视觉规范为准） -->
+    <symbol id="fp" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="31" fill="#FFF6EE"/>
+      <path d="M44 54 C54 50 60 42 58 34 C50 38 46 44 44 50 Z" fill="#FFB9C8" stroke="#22304F" stroke-width="2"/>
+      <ellipse cx="10" cy="38" rx="9" ry="12" fill="#FFB9C8" stroke="#22304F" stroke-width="2" transform="rotate(-18 10 38)"/>
+      <ellipse cx="54" cy="38" rx="9" ry="12" fill="#FFB9C8" stroke="#22304F" stroke-width="2" transform="rotate(18 54 38)"/>
+      <ellipse cx="32" cy="32" rx="22" ry="23" fill="#4390C2" stroke="#22304F" stroke-width="2"/>
+      <ellipse cx="32" cy="36" rx="16" ry="15" fill="#FFE8D8"/>
+      <path d="M16 30 C16 16 48 16 48 30 C44 24 40 22 32 22 C24 22 20 24 16 30 Z" fill="#245C88"/>
+      <path d="M32 10 C34 4 40 3 40 8 C40 11 36 10 35 12" fill="none" stroke="#22304F" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="26" cy="36" r="3.4" fill="#173E60"/>
+      <circle cx="38" cy="36" r="3.4" fill="#173E60"/>
+      <circle cx="27" cy="35" r="1.1" fill="#FFFFFF"/>
+      <circle cx="39" cy="35" r="1.1" fill="#FFFFFF"/>
+      <ellipse cx="22" cy="42" rx="3" ry="1.8" fill="#FF9DB0" opacity="0.7"/>
+      <ellipse cx="42" cy="42" rx="3" ry="1.8" fill="#FF9DB0" opacity="0.7"/>
+      <path d="M29 44 Q32 47 35 44" fill="none" stroke="#8C3A4D" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M22 52 C26 55 38 55 42 52 L44 60 L20 60 Z" fill="#2C5680"/>
+    </symbol>
+
+    <!-- 开关组件 -->
+    <symbol id="swOn" viewBox="0 0 40 22">
+      <rect x="1" y="1" width="38" height="20" rx="10" fill="#4176E6"/>
+      <circle cx="29" cy="11" r="8" fill="#FFFFFF"/>
+    </symbol>
+    <symbol id="swOff" viewBox="0 0 40 22">
+      <rect x="1" y="1" width="38" height="20" rx="10" fill="#D7DCE6"/>
+      <circle cx="11" cy="11" r="8" fill="#FFFFFF"/>
+    </symbol>
+
+    <clipPath id="screenClip"><rect x="58" y="142" width="352" height="740" rx="26"/></clipPath>
+  </defs>
+
+  <rect width="1280" height="1720" fill="url(#bg)"/>
+
+  <!-- 标题 -->
+  <text x="48" y="56" font-size="26" font-weight="700" fill="#0F1115">肥鱼娘完成提醒 · 手机端交互示意</text>
+  <text x="48" y="82" font-size="13" fill="#61666B">竖屏 375–430px ｜ 横屏高 ≤500px ｜ 弹窗动效 2.8s ｜ 触控目标 ≥44px ｜ z-index 2147483100 ｜ 设计规范 v1.1</text>
+  <text x="1232" y="56" font-size="11" fill="#81858C" text-anchor="end">HarmonyOS NEXT 主路径：飞书 / ntfy</text>
+  <text x="1232" y="76" font-size="11" fill="#81858C" text-anchor="end">Web Push 仅部分安卓 / 桌面可选</text>
+  <line x1="48" y1="100" x2="1232" y2="100" stroke="#DFE4ED" stroke-width="1"/>
+
+  <!-- ============================================================ -->
+  <!-- ① 竖屏主场景 -->
+  <!-- ============================================================ -->
+  <text x="48" y="126" font-size="14" font-weight="700" fill="#0F1115">① 竖屏主场景 375–430px</text>
+  <text x="48" y="138" font-size="11" fill="#81858C">弹窗在输入框上方；从飞书/ntfy 点进来时首屏自动出现</text>
+
+  <rect x="48" y="158" width="372" height="760" rx="38" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="2.5"/>
+  <rect x="170" y="166" width="128" height="20" rx="10" fill="#0F1115"/>
+
+  <g clip-path="url(#screenClip)">
+    <rect x="58" y="142" width="352" height="740" fill="#FFFFFF"/>
+
+    <!-- 顶栏 -->
+    <text x="78" y="196" font-size="13" font-weight="700" fill="#0F1115">DSH</text>
+    <text x="234" y="196" font-size="12" fill="#0F1115" text-anchor="middle">会话 · 跑测试</text>
+    <text x="388" y="198" font-size="15" fill="#61666B" text-anchor="end">⋯</text>
+    <line x1="58" y1="208" x2="410" y2="208" stroke="#EFF1F5"/>
+
+    <!-- 对话 -->
+    <rect x="232" y="224" width="156" height="40" rx="14" fill="#EDF3FE"/>
+    <text x="244" y="249" font-size="12" fill="#0F1115">帮我把测试跑一下</text>
+
+    <rect x="78" y="278" width="202" height="40" rx="14" fill="#F7F8FA" stroke="#E7EAF0"/>
+    <text x="90" y="303" font-size="12" fill="#0F1115">好的，正在跑测试…</text>
+
+    <rect x="78" y="332" width="272" height="64" rx="14" fill="#F7F8FA" stroke="#E7EAF0"/>
+    <text x="90" y="356" font-size="12" fill="#0F1115">12 个用例通过，</text>
+    <text x="90" y="376" font-size="12" fill="#0F1115">还差 3 个，稍等～</text>
+
+    <text x="224" y="470" font-size="11" fill="#ADB2B8" text-anchor="middle" stroke="#DDE2EA" stroke-dasharray="3 4">（页面内容，可滚动）</text>
+    <rect x="78" y="492" width="300" height="10" rx="5" fill="#F1F4F9"/>
+    <rect x="78" y="514" width="244" height="10" rx="5" fill="#F1F4F9"/>
+    <rect x="78" y="536" width="278" height="10" rx="5" fill="#F1F4F9"/>
+    <rect x="78" y="558" width="196" height="10" rx="5" fill="#F1F4F9"/>
+
+    <!-- 弹窗 -->
+    <g filter="url(#cardShadow)">
+      <rect x="78" y="600" width="312" height="162" rx="16" fill="url(#popupBg)" stroke="#E3E7EF"/>
+    </g>
+    <use xlink:href="#fp" x="90" y="618" width="64" height="64"/>
+    <polygon points="166,628 152,636 166,644" fill="#FFFFFF"/>
+    <text x="176" y="646" font-size="16" font-weight="700" fill="#0F1115">做好啦～</text>
+    <text x="176" y="666" font-size="11" fill="#81858C">DSH · 跑测试 · 2 分 14 秒</text>
+    <text x="176" y="690" font-size="12" fill="#61666B">这一轮完成啦，去看看吧</text>
+    <rect x="176" y="704" width="92" height="44" rx="12" fill="#0F1115"/>
+    <text x="222" y="731" font-size="13" fill="#FFFFFF" text-anchor="middle">查看会话</text>
+    <rect x="276" y="704" width="96" height="44" rx="12" fill="#F2F4F8" stroke="#E3E7EF"/>
+    <text x="324" y="731" font-size="13" fill="#0F1115" text-anchor="middle">知道了</text>
+
+    <!-- 关闭热区 -->
+    <circle cx="368" cy="618" r="22" fill="none" stroke="#FF8FA3" stroke-width="1.2" stroke-dasharray="3 3"/>
+    <text x="368" y="625" font-size="17" fill="#61666B" text-anchor="middle">×</text>
+
+    <!-- 输入区 -->
+    <line x1="78" y1="770" x2="390" y2="770" stroke="#FFB9C8" stroke-width="1" stroke-dasharray="4 3"/>
+    <rect x="68" y="770" width="332" height="76" rx="20" fill="#FFFFFF" stroke="#D9DEE8"/>
+    <text x="94" y="814" font-size="16" fill="#81858C">＋</text>
+    <text x="120" y="814" font-size="13" fill="#81858C">输入消息…</text>
+    <circle cx="370" cy="808" r="20" fill="#0F1115"/>
+    <path d="M364 814 L376 808 L364 802" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="68" y1="858" x2="400" y2="858" stroke="#DDE2EA" stroke-dasharray="4 4"/>
+    <text x="78" y="872" font-size="9" fill="#ADB2B8">safe-area-inset-bottom</text>
+  </g>
+
+  <!-- 标注 -->
+  <g stroke="#FF8FA3" stroke-width="1" fill="none">
+    <path d="M440 610 L404 610 L388 618"/>
+    <path d="M440 566 L398 566 L392 598"/>
+    <path d="M440 706 L386 706"/>
+    <path d="M440 770 L398 770"/>
+  </g>
+  <g font-size="11" fill="#0F1115">
+    <text x="446" y="560">挂载 body、独立层级</text>
+    <text x="446" y="576" fill="#61666B">z-index 2147483100</text>
+    <text x="446" y="590" fill="#61666B">不在 pet / task-board</text>
+    <text x="446" y="604" fill="#61666B">节点内；竖屏隐藏清单</text>
+    <text x="446" y="618" fill="#61666B">不会影响它</text>
+
+    <text x="446" y="700">关闭热区 44×44px</text>
+    <text x="446" y="716" fill="#61666B">视觉图标 18px；aria-label</text>
+    <text x="446" y="730" fill="#61666B">＝「关闭提醒」</text>
+
+    <text x="446" y="754">卡片底边 = 输入框顶 −8px</text>
+    <text x="446" y="770" fill="#61666B">输入框长高时卡片跟随上移；</text>
+    <text x="446" y="784" fill="#61666B">绝不覆盖发送键</text>
+    <text x="446" y="806" fill="#61666B">2.8s 自动退场；Esc / 下滑</text>
+    <text x="446" y="820" fill="#61666B">可关闭；悬停暂停计时</text>
+    <text x="446" y="846" fill="#C2410C">从飞书 / ntfy 点进来：</text>
+    <text x="446" y="860" fill="#61666B">首屏 0–150ms 自动出现，</text>
+    <text x="446" y="874" fill="#61666B">不需要再点一次</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- ② 横屏紧凑形态 -->
+  <!-- ============================================================ -->
+  <text x="700" y="126" font-size="14" font-weight="700" fill="#0F1115">② 横屏紧凑形态（orientation: landscape 且高 ≤500px）</text>
+  <text x="700" y="144" font-size="11" fill="#81858C">单行 76px，正文 1 行；软键盘打开时延后不弹</text>
+
+  <rect x="700" y="158" width="520" height="232" rx="30" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="2.5"/>
+  <text x="722" y="186" font-size="12" font-weight="700" fill="#0F1115">DSH</text>
+  <text x="900" y="186" font-size="11" fill="#81858C" text-anchor="middle">会话 · 跑测试</text>
+  <text x="1194" y="188" font-size="13" fill="#61666B" text-anchor="end">⋯</text>
+  <line x1="712" y1="196" x2="1208" y2="196" stroke="#EFF1F5"/>
+
+  <rect x="722" y="210" width="220" height="8" rx="4" fill="#EEF1F6"/>
+  <rect x="722" y="226" width="150" height="8" rx="4" fill="#EEF1F6"/>
+
+  <!-- 横屏弹窗 -->
+  <g filter="url(#softShadow)">
+    <rect x="724" y="240" width="470" height="68" rx="14" fill="#FFFFFF" stroke="#E3E7EF"/>
+  </g>
+  <use xlink:href="#fp" x="734" y="252" width="44" height="44"/>
+  <text x="790" y="268" font-size="14" font-weight="700" fill="#0F1115">做好啦～</text>
+  <text x="790" y="288" font-size="11" fill="#61666B">跑测试 · 2 分 14 秒</text>
+  <circle cx="1174" cy="274" r="20" fill="none" stroke="#FF8FA3" stroke-width="1.1" stroke-dasharray="3 3"/>
+  <text x="1174" y="280" font-size="15" fill="#61666B" text-anchor="middle">×</text>
+  <rect x="1064" y="252" width="76" height="44" rx="10" fill="#0F1115"/>
+  <text x="1102" y="279" font-size="11" fill="#FFFFFF" text-anchor="middle">查看</text>
+
+  <!-- 横屏输入区 -->
+  <rect x="724" y="316" width="470" height="48" rx="16" fill="#FFFFFF" stroke="#D9DEE8"/>
+  <text x="744" y="346" font-size="12" fill="#81858C">输入消息…</text>
+  <circle cx="1162" cy="340" r="16" fill="#0F1115"/>
+  <path d="M1157 345 L1167 340 L1157 335" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="724" y="382" font-size="9" fill="#ADB2B8">卡片底边距输入框顶 8px；安全区左右 env(safe-area-inset-left/right)</text>
+
+  <!-- ============================================================ -->
+  <!-- ③ 设置卡 -->
+  <!-- ============================================================ -->
+  <text x="700" y="414" font-size="14" font-weight="700" fill="#0F1115">③ 设置卡信息架构（手机端单列）</text>
+
+  <rect x="700" y="426" width="520" height="470" rx="16" fill="#FFFFFF" stroke="#DFE4ED"/>
+  <text x="724" y="458" font-size="15" font-weight="700" fill="#0F1115">通知 · 肥鱼娘</text>
+  <text x="724" y="476" font-size="10" fill="#81858C">回合做完时，飞书 / ntfy 替你「叮」一声</text>
+  <rect x="1030" y="440" width="172" height="24" rx="12" fill="#E8F8EF" stroke="#7BC99A"/>
+  <circle cx="1046" cy="452" r="3.5" fill="#22C55E"/>
+  <text x="1056" y="456" font-size="10" fill="#15803D">飞书已连接</text>
+
+  <g font-size="11.5" fill="#0F1115">
+    <text x="724" y="512">总开关</text>
+    <use xlink:href="#swOn" x="1168" y="500" width="40" height="22"/>
+    <text x="724" y="538">页内动效</text>
+    <use xlink:href="#swOn" x="1168" y="526" width="40" height="22"/>
+    <text x="724" y="564">前台只弹页内</text>
+    <use xlink:href="#swOn" x="1168" y="552" width="40" height="22"/>
+    <text x="724" y="590">飞书（主通道）</text>
+    <text x="1176" y="590" font-size="10.5" fill="#15803D" text-anchor="end">已连接 · 14:32</text>
+    <text x="724" y="616">ntfy（备选）</text>
+    <text x="1176" y="616" font-size="10.5" fill="#61666B" text-anchor="end">未配置 ›</text>
+    <text x="724" y="642">Web Push（可选）</text>
+    <text x="1176" y="642" font-size="10.5" fill="#ADB2B8" text-anchor="end">不支持 · 已隐藏</text>
+    <text x="724" y="668">事件：成功 / 失败</text>
+    <text x="1176" y="668" font-size="10.5" fill="#61666B" text-anchor="end">开 · 开</text>
+    <text x="724" y="694">触顶 / 中断</text>
+    <text x="1176" y="694" font-size="10.5" fill="#61666B" text-anchor="end">关 · 关</text>
+    <text x="724" y="720">节奏：去抖 / 合并 / 间隔</text>
+    <text x="1176" y="720" font-size="10.5" fill="#61666B" text-anchor="end">1.2s / 5s / 3s</text>
+    <text x="724" y="746">静默时段</text>
+    <text x="1176" y="746" font-size="10.5" fill="#61666B" text-anchor="end">关 · 23:00–08:00</text>
+    <text x="724" y="772">通知文案</text>
+    <text x="1176" y="772" font-size="10.5" fill="#61666B" text-anchor="end">做好啦～ / …</text>
+    <text x="724" y="798">测试发送</text>
+    <rect x="1090" y="780" width="86" height="26" rx="8" fill="#F2F4F8" stroke="#D9DEE8"/>
+    <text x="1133" y="797" font-size="10" fill="#0F1115" text-anchor="middle">发条测试</text>
+    <text x="724" y="824">诊断信息</text>
+    <text x="1176" y="824" font-size="10.5" fill="#61666B" text-anchor="end">折叠 ›</text>
+    <text x="724" y="850">最近完成（5 条）</text>
+    <text x="1176" y="850" font-size="10.5" fill="#61666B" text-anchor="end">5 条 ›</text>
+    <text x="724" y="876">高级：通道顺序 / 调试</text>
+    <text x="1176" y="876" font-size="10.5" fill="#61666B" text-anchor="end">飞书优先 ›</text>
+  </g>
+  <g stroke="#EFF1F5">
+    <line x1="712" y1="576" x2="1208" y2="576"/>
+    <line x1="712" y1="654" x2="1208" y2="654"/>
+    <line x1="712" y1="708" x2="1208" y2="708"/>
+    <line x1="712" y1="786" x2="1208" y2="786"/>
+    <line x1="712" y1="842" x2="1208" y2="842"/>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- ④ 2.8s 分镜 -->
+  <!-- ============================================================ -->
+  <text x="48" y="944" font-size="14" font-weight="700" fill="#0F1115">④ 2.8s 分镜（自动退场，总计 ≤3s）</text>
+  <text x="48" y="962" font-size="11" fill="#81858C">reduced-motion 时取消位移/旋转/眨眼，仅 120ms 淡入淡出；悬停、聚焦、页面隐藏会暂停</text>
+
+  <!-- 帧 1：0ms 入场 -->
+  <g transform="translate(48,982)">
+    <rect width="150" height="110" rx="12" fill="#FFFFFF" stroke="#E3E7EF"/>
+    <g opacity="0.38" transform="translate(0,6)">
+      <rect x="16" y="22" width="118" height="54" rx="8" fill="#FFFFFF" stroke="#D9DEE8"/>
+      <use xlink:href="#fp" x="22" y="30" width="22" height="22"/>
+      <rect x="50" y="30" width="38" height="5" rx="2.5" fill="#0F1115"/>
+      <rect x="50" y="40" width="56" height="4" rx="2" fill="#C7CDD8"/>
+      <rect x="50" y="50" width="24" height="10" rx="4" fill="#0F1115"/>
+      <rect x="78" y="50" width="24" height="10" rx="4" fill="#E3E7EF"/>
+    </g>
+  </g>
+  <text x="48" y="1114" font-size="11" font-weight="700" fill="#0F1115">0 ms · 入场</text>
+  <text x="48" y="1128" font-size="9.5" fill="#61666B">opacity 0→1 / 上移 14px</text>
+  <text x="48" y="1140" font-size="9.5" fill="#61666B">220ms，ease-out</text>
+
+  <!-- 帧 2：120ms 气泡 -->
+  <g transform="translate(240,982)">
+    <rect width="150" height="110" rx="12" fill="#FFFFFF" stroke="#E3E7EF"/>
+    <rect x="16" y="22" width="118" height="54" rx="8" fill="#FFFFFF" stroke="#D9DEE8"/>
+    <use xlink:href="#fp" x="22" y="30" width="22" height="22"/>
+    <polygon points="46,38 41,44 46,50" fill="#FFFFFF"/>
+    <rect x="50" y="30" width="44" height="5" rx="2.5" fill="#0F1115"/>
+    <rect x="50" y="40" width="56" height="4" rx="2" fill="#C7CDD8"/>
+    <rect x="50" y="50" width="24" height="10" rx="4" fill="#0F1115"/>
+    <rect x="78" y="50" width="24" height="10" rx="4" fill="#E3E7EF"/>
+  </g>
+  <text x="240" y="1114" font-size="11" font-weight="700" fill="#0F1115">120 ms · 气泡弹出</text>
+  <text x="240" y="1128" font-size="9.5" fill="#61666B">scale .86→1，160ms</text>
+  <text x="240" y="1140" font-size="9.5" fill="#61666B">尾巴同步出现</text>
+
+  <!-- 帧 3：520ms 摆动 -->
+  <g transform="translate(432,982)">
+    <rect width="150" height="110" rx="12" fill="#FFFFFF" stroke="#E3E7EF"/>
+    <g transform="rotate(-2 75 55)">
+      <rect x="16" y="22" width="118" height="54" rx="8" fill="#FFFFFF" stroke="#D9DEE8"/>
+      <use xlink:href="#fp" x="22" y="30" width="22" height="22"/>
+      <rect x="50" y="30" width="44" height="5" rx="2.5" fill="#0F1115"/>
+      <rect x="50" y="40" width="56" height="4" rx="2" fill="#C7CDD8"/>
+      <rect x="50" y="50" width="24" height="10" rx="4" fill="#0F1115"/>
+      <rect x="78" y="50" width="24" height="10" rx="4" fill="#E3E7EF"/>
+    </g>
+    <path d="M16 92 C 40 98 110 98 134 92" fill="none" stroke="#FF8FA3" stroke-width="1.4" stroke-dasharray="4 3"/>
+  </g>
+  <text x="432" y="1114" font-size="11" font-weight="700" fill="#0F1115">520 ms · 摆动</text>
+  <text x="432" y="1128" font-size="9.5" fill="#61666B">rotate −2°↔2°，1.6s</text>
+  <text x="432" y="1140" font-size="9.5" fill="#61666B">循环；气泡轻微呼吸</text>
+
+  <!-- 帧 4：900ms 眨眼 -->
+  <g transform="translate(624,982)">
+    <rect width="150" height="110" rx="12" fill="#FFFFFF" stroke="#E3E7EF"/>
+    <rect x="16" y="22" width="118" height="54" rx="8" fill="#FFFFFF" stroke="#D9DEE8"/>
+    <use xlink:href="#fp" x="22" y="30" width="22" height="22"/>
+    <ellipse cx="30.9" cy="42.4" rx="2.4" ry="1.9" fill="#FFE8D8"/>
+    <ellipse cx="35.1" cy="42.4" rx="2.4" ry="1.9" fill="#FFE8D8"/>
+    <line x1="29.2" y1="42.4" x2="32.6" y2="42.4" stroke="#173E60" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="33.4" y1="42.4" x2="36.8" y2="42.4" stroke="#173E60" stroke-width="1.4" stroke-linecap="round"/>
+    <rect x="50" y="30" width="44" height="5" rx="2.5" fill="#0F1115"/>
+    <rect x="50" y="40" width="56" height="4" rx="2" fill="#C7CDD8"/>
+    <rect x="50" y="50" width="24" height="10" rx="4" fill="#0F1115"/>
+    <rect x="78" y="50" width="24" height="10" rx="4" fill="#E3E7EF"/>
+  </g>
+  <text x="624" y="1114" font-size="11" font-weight="700" fill="#0F1115">900 ms · 眨眼</text>
+  <text x="624" y="1128" font-size="9.5" fill="#61666B">闭合帧 120ms（P1 素材）</text>
+  <text x="624" y="1140" font-size="9.5" fill="#61666B">无素材则省略</text>
+
+  <!-- 帧 5：1500ms 停留 -->
+  <g transform="translate(816,982)">
+    <rect width="150" height="110" rx="12" fill="#FFFFFF" stroke="#E3E7EF"/>
+    <rect x="16" y="22" width="118" height="54" rx="8" fill="#FFFFFF" stroke="#D9DEE8"/>
+    <use xlink:href="#fp" x="22" y="30" width="22" height="22"/>
+    <rect x="50" y="30" width="44" height="5" rx="2.5" fill="#0F1115"/>
+    <rect x="50" y="40" width="56" height="4" rx="2" fill="#C7CDD8"/>
+    <rect x="50" y="50" width="24" height="10" rx="4" fill="#0F1115"/>
+    <rect x="78" y="50" width="24" height="10" rx="4" fill="#E3E7EF"/>
+    <text x="75" y="94" font-size="9" fill="#ADB2B8" text-anchor="middle">no new motion</text>
+  </g>
+  <text x="816" y="1114" font-size="11" font-weight="700" fill="#0F1115">1500 ms · 停留</text>
+  <text x="816" y="1128" font-size="9.5" fill="#61666B">不再新增动效</text>
+  <text x="816" y="1140" font-size="9.5" fill="#61666B">留时间读完标题</text>
+
+  <!-- 帧 6：2500ms 退场 -->
+  <g transform="translate(1008,982)">
+    <rect width="150" height="110" rx="12" fill="#FFFFFF" stroke="#E3E7EF"/>
+    <g opacity="0.32" transform="translate(0,5)">
+      <rect x="16" y="22" width="118" height="54" rx="8" fill="#FFFFFF" stroke="#D9DEE8"/>
+      <use xlink:href="#fp" x="22" y="30" width="22" height="22"/>
+      <rect x="50" y="30" width="44" height="5" rx="2.5" fill="#0F1115"/>
+      <rect x="50" y="40" width="56" height="4" rx="2" fill="#C7CDD8"/>
+      <rect x="50" y="50" width="24" height="10" rx="4" fill="#0F1115"/>
+      <rect x="78" y="50" width="24" height="10" rx="4" fill="#E3E7EF"/>
+    </g>
+  </g>
+  <text x="1008" y="1114" font-size="11" font-weight="700" fill="#0F1115">2500 ms · 退场</text>
+  <text x="1008" y="1128" font-size="9.5" fill="#61666B">200ms 淡出 + 下移 8px</text>
+  <text x="1008" y="1140" font-size="9.5" fill="#61666B">2800ms 移除 DOM</text>
+
+  <!-- 时间轴 -->
+  <g>
+    <rect x="48" y="1158" width="87" height="14" rx="7" fill="#4176E6"/>
+    <rect x="135" y="1158" width="119" height="14" fill="#7AAAFF"/>
+    <rect x="254" y="1158" width="388" height="14" fill="#FFB9C8"/>
+    <rect x="642" y="1158" width="396" height="14" fill="#E5E9F2"/>
+    <rect x="1038" y="1158" width="119" height="14" rx="7" fill="#FF8FA3"/>
+  </g>
+  <g font-size="9" fill="#81858C">
+    <text x="48" y="1188">0</text>
+    <text x="135" y="1188" text-anchor="middle">220</text>
+    <text x="254" y="1188" text-anchor="middle">520</text>
+    <text x="404" y="1188" text-anchor="middle">900</text>
+    <text x="642" y="1188" text-anchor="middle">1500</text>
+    <text x="1038" y="1188" text-anchor="middle">2500</text>
+    <text x="1158" y="1188" text-anchor="end">2800 ms</text>
+  </g>
+  <g font-size="9" fill="#0F1115">
+    <text x="90" y="1208" text-anchor="middle">入场</text>
+    <text x="194" y="1208" text-anchor="middle">气泡</text>
+    <text x="448" y="1208" text-anchor="middle">摆动 / 说话 / 眨眼</text>
+    <text x="840" y="1208" text-anchor="middle">停留阅读</text>
+    <text x="1098" y="1208" text-anchor="middle">退场</text>
+  </g>
+
+  <!-- 底部说明 -->
+  <line x1="48" y1="1226" x2="1232" y2="1226" stroke="#DFE4ED"/>
+
+  <!-- ⑤ 通知形态与点击链 -->
+  <text x="48" y="1306" font-size="14" font-weight="700" fill="#0F1115">⑤ 通知形态与点击链（飞书卡片 / ntfy）</text>
+  <text x="48" y="1324" font-size="11" fill="#81858C">通知由飞书 / ntfy App 发出；点开链接后页内自动弹窗，不需要二次点击</text>
+
+  <!-- 飞书卡片 -->
+  <rect x="48" y="1348" width="520" height="222" rx="12" fill="#FFFFFF" stroke="#DFE4ED"/>
+  <rect x="48" y="1348" width="520" height="46" rx="12" fill="#DCF5E7"/>
+  <rect x="48" y="1382" width="520" height="12" fill="#DCF5E7"/>
+  <text x="68" y="1378" font-size="16" font-weight="700" fill="#14532D">做好啦～</text>
+  <text x="68" y="1420" font-size="11" fill="#61666B">跑测试 · 用时 2 分 14 秒</text>
+  <text x="68" y="1444" font-size="12" fill="#0F1115">这一轮完成啦，点开看看结果</text>
+  <line x1="68" y1="1486" x2="548" y2="1486" stroke="#EFF1F5"/>
+  <rect x="434" y="1500" width="114" height="30" rx="8" fill="#0F1115"/>
+  <text x="491" y="1519" font-size="11" fill="#FFFFFF" text-anchor="middle">看肥鱼娘</text>
+  <text x="68" y="1554" font-size="9" fill="#ADB2B8">DSH · 完成提醒 · 14:32</text>
+
+  <!-- ntfy 通知 -->
+  <rect x="620" y="1348" width="300" height="200" rx="18" fill="#F4F6FB" stroke="#D9DEE8"/>
+  <text x="640" y="1374" font-size="9.5" fill="#81858C">ntfy · 14:32</text>
+  <line x1="620" y1="1388" x2="920" y2="1388" stroke="#E3E8F0"/>
+  <text x="640" y="1414" font-size="14" font-weight="700" fill="#0F1115">做好啦～</text>
+  <text x="640" y="1438" font-size="11" fill="#61666B">跑测试 · 用时 2 分 14 秒</text>
+  <text x="640" y="1460" font-size="11" fill="#61666B">这一轮完成啦，点开看看结果</text>
+  <text x="640" y="1518" font-size="9.5" fill="#81858C">点按通知 → 打开 DSH</text>
+
+  <!-- 箭头 -->
+  <line x1="568" y1="1459" x2="610" y2="1459" stroke="#94A3B8" stroke-width="1.5"/>
+  <polygon points="610,1459 602,1454 602,1464" fill="#94A3B8"/>
+  <text x="589" y="1448" font-size="9" fill="#81858C" text-anchor="middle">点按钮</text>
+  <line x1="920" y1="1459" x2="976" y2="1459" stroke="#94A3B8" stroke-width="1.5"/>
+  <polygon points="976,1459 968,1454 968,1464" fill="#94A3B8"/>
+  <text x="948" y="1448" font-size="9" fill="#81858C" text-anchor="middle">点通知</text>
+
+  <!-- 点击后说明 -->
+  <text x="990" y="1374" font-size="11" font-weight="700" fill="#0F1115">点开后发生什么</text>
+  <text x="990" y="1398" font-size="10" fill="#61666B">① 打开 returnUrl?finish=&lt;id&gt;</text>
+  <text x="990" y="1418" font-size="10" fill="#61666B">② 0–150ms 弹窗先出现</text>
+  <text x="990" y="1438" font-size="10" fill="#61666B">③ 150–800ms 补会话 / 摘要</text>
+  <text x="990" y="1458" font-size="10" fill="#61666B">④ 读取后 replaceState 去参数</text>
+  <text x="990" y="1478" font-size="10" fill="#61666B">⑤ 同一 id 刷新不重播</text>
+  <text x="990" y="1498" font-size="10" fill="#61666B">⑥ 过期 → 「这条提醒有点旧啦」</text>
+  <text x="990" y="1518" font-size="10" fill="#61666B">　 +「查看会话」兜底</text>
+  <text x="990" y="1546" font-size="10" fill="#C2410C">绝不要求二次点开</text>
+  <text x="990" y="1566" font-size="10" fill="#81858C">摘要默认关；开启才多一行</text>
+
+  <line x1="48" y1="1626" x2="1232" y2="1626" stroke="#DFE4ED"/>
+  <text x="48" y="1646" font-size="10" fill="#61666B">· 位置：卡片底边始终在输入框容器顶边上方 8px（测不到时兜底 bottom = safe-area + 96px）；两侧 ≥12px；不遮发送键、不停焦点。</text>
+  <text x="48" y="1662" font-size="10" fill="#61666B">· 兼容：弹窗根节点挂 body、标 data-dsh-plugin="finish-notify"，z-index 2147483100；不在 pet / task-board / _detailsCol 内，竖屏隐藏清单不影响。</text>
+  <text x="48" y="1678" font-size="10" fill="#61666B">· 关闭：×（44×44）/ Esc / 下滑 24px；打开设置面板或软键盘时排队，不叠加；同一事件每设备自动弹 1 次，手点通知可重播。</text>
+  <text x="48" y="1694" font-size="10" fill="#C2410C">· 通知：飞书卡片全部 plain_text 防注入、不 @ 人；ntfy Click 带 finish；webhook / topic / token 绝不出现在文案或诊断截图里。</text>
+</svg>

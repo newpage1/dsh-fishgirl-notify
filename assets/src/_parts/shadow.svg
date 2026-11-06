@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+  <linearGradient id="gSkin" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF4EB"/><stop offset="1" stop-color="#FFE8D8"/>
+  </linearGradient>
+  <linearGradient id="gHair" x1="0" y1="0" x2="0.15" y2="1">
+    <stop offset="0" stop-color="#4390C2"/><stop offset="1" stop-color="#245C88"/>
+  </linearGradient>
+  <linearGradient id="gHairSide" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4E9BCB"/><stop offset="1" stop-color="#2A6390"/>
+  </linearGradient>
+  <linearGradient id="gFin" x1="0" y1="0" x2="1" y2="0.3">
+    <stop offset="0" stop-color="#FFB9C8"/><stop offset="1" stop-color="#FF7F9E"/>
+  </linearGradient>
+  <linearGradient id="gTail" x1="0" y1="0" x2="0.8" y2="1">
+    <stop offset="0" stop-color="#FFC0CD"/><stop offset="0.55" stop-color="#FF8FA8"/><stop offset="1" stop-color="#FF7C9C"/>
+  </linearGradient>
+  <linearGradient id="gDress" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF8F0"/><stop offset="1" stop-color="#FFE7D3"/>
+  </linearGradient>
+  <radialGradient id="gIris" cx="0.42" cy="0.32" r="0.75">
+    <stop offset="0" stop-color="#4FA8D8"/><stop offset="0.55" stop-color="#2A6C9C"/><stop offset="1" stop-color="#173E60"/>
+  </radialGradient>
+  <radialGradient id="gGlow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FF8FA3" stop-opacity="0.5"/><stop offset="1" stop-color="#FF8FA3" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="10"/>
+  </filter>
+  <filter id="soft2" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+
+<g id="shadow">
+  <ellipse cx="512" cy="952" rx="250" ry="26" fill="#1B2B45" opacity="0.18" filter="url(#soft)"/>
+</g>
+</svg>

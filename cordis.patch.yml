@@ -1,0 +1,55 @@
+# dsh-finish-notify 装载补丁：安装本包后由 Host 合入 profile patch 层。
+# config 下的键即《docs/技术方案.md》§10.1 配置表的运行时子集；
+# 全部可省略，非法值会回退默认并在 /api/finish-notify/diagnostics 可诊断。
+- insert:
+    - id: finish-notify
+      name: 'dsh-fishgirl-notify'
+      config:
+        enabled: true
+        notifyCompleted: true
+        notifyError: true
+        notifyMaxTokens: false
+        notifyInterrupted: false
+        onlyRootSessions: true
+        pagePopupEnabled: true
+        debounceMs: 1200
+        coalesceMs: 5000
+        minGapMs: 3000
+        quietEnabled: false
+        quietStart: '23:00'
+        quietEnd: '08:00'
+        quietSuppressPush: true
+        suppressPushWhenVisible: true
+        channelOrder: ['feishu', 'ntfy', 'webpush']
+        fallbackOnFailure: true
+        feishuEnabled: true
+        feishuUseCard: true
+        feishuMaxBodyChars: 600
+        feishuAppEnabled: false
+        feishuAppReceiveIdType: 'chat_id'
+        feishuAppReceiveId: ''
+        feishuAppUseCard: true
+        ntfyEnabled: true
+        ntfyServer: 'https://ntfy.sh'
+        ntfyPriority: 4
+        ntfyTags: ['fish']
+        ntfyAttachMaxKB: 2048
+        webpushEnabled: true
+        pushTtlSeconds: 3600
+        pushUrgency: 'high'
+        healthCacheMs: 300000
+        requestTimeoutMs: 5000
+        retries: 1
+        diagnosticsEnabled: true
+        allowLoopbackControl: true
+        titleCompleted: '做好啦～'
+        bodyCompletedTemplate: '{sessionTitle} 这一轮完成啦（用时 {duration}）'
+        titleError: '呜…出错了'
+        bodyErrorTemplate: '{sessionTitle} 卡住了（{errorCode}）'
+        titleMaxTokens: '话说太满啦'
+        bodyMaxTokensTemplate: '这一轮达到长度上限'
+        titleInterrupted: '被打断啦'
+        bodyInterruptedTemplate: '这一轮被中断'
+        titleTest: '测试一下～'
+        bodyTestTemplate: '能听到我说话吗？听到就眨眨眼'
+        includeSummary: false

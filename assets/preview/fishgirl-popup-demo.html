@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>肥鱼娘 · 完成提醒动效预览</title>
+<link rel="stylesheet" href="../fishgirl-animation.css" />
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #eaf1ff;
+    --muted: #93a3bd;
+    --bg: #0b111c;
+    --line: rgba(255, 255, 255, 0.1);
+    --card: #141c2b;
+    --coral: #ff8fa3;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(80% 60% at 50% -10%, rgba(255, 127, 158, 0.16), transparent 60%),
+      radial-gradient(60% 50% at 100% 100%, rgba(77, 107, 254, 0.12), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", system-ui, sans-serif;
+    padding: 34px 20px 60px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  header { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 26px; margin-bottom: 26px; }
+  h1 { font-size: 30px; margin: 0; letter-spacing: 0.02em; }
+  h1 em { color: var(--coral); font-style: normal; }
+  header p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 11px; color: var(--muted); }
+  .badge i { width: 6px; height: 6px; border-radius: 50%; background: #7fe3d8; box-shadow: 0 0 8px #7fe3d8; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+  button {
+    appearance: none; border: 1px solid var(--line); background: #182234; color: var(--ink);
+    padding: 9px 14px; border-radius: 12px; font: inherit; font-size: 13px; cursor: pointer;
+    transition: transform .16s ease, border-color .16s ease, background .16s ease;
+  }
+  button:hover { border-color: rgba(255, 143, 163, .5); background: #1c2a40; }
+  button:active { transform: translateY(1px) scale(.99); }
+  button.primary { background: linear-gradient(135deg, #ff8fa3, #ff6f91); border-color: transparent; color: #2a0f19; font-weight: 700; }
+  button.on { outline: 2px solid #7fe3d8; outline-offset: 1px; }
+
+  .phones { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+  .phone-block { flex: 0 0 auto; }
+  .phone-label { display: flex; justify-content: space-between; align-items: center; margin: 0 4px 10px; color: var(--muted); font-size: 12px; }
+  .phone-label b { color: var(--ink); font-size: 13px; font-weight: 600; }
+  .phone {
+    position: relative;
+    width: 360px; height: 620px;
+    border-radius: 46px;
+    background: #070b12;
+    border: 1px solid rgba(255, 255, 255, .14);
+    box-shadow: 0 40px 80px -40px #000, 0 0 0 8px #0c1220, 0 0 0 9px rgba(255, 255, 255, .06);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .phone.light {
+    background: #efe9df;
+    border-color: rgba(0, 0, 0, .12);
+    box-shadow: 0 40px 80px -40px #000, 0 0 0 8px #1a2233, 0 0 0 9px rgba(255, 255, 255, .06);
+  }
+  .phone::before {
+    content: ""; position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 96px; height: 26px; border-radius: 999px; background: #05080e; z-index: 5;
+  }
+  .phone.light::before { background: #141a24; }
+  .screen {
+    position: absolute; inset: 0;
+    padding: 72px 18px 24px;
+    display: flex; flex-direction: column;
+    background:
+      radial-gradient(70% 50% at 80% 0%, rgba(77, 107, 254, .22), transparent 65%),
+      radial-gradient(60% 40% at 10% 100%, rgba(255, 143, 163, .16), transparent 60%);
+  }
+  .phone.light .screen {
+    background:
+      radial-gradient(70% 50% at 80% 0%, rgba(255, 143, 163, .18), transparent 65%),
+      radial-gradient(60% 40% at 10% 100%, rgba(77, 107, 254, .08), transparent 60%);
+  }
+  .chat { display: flex; flex-direction: column; gap: 10px; opacity: .55; }
+  .bubble-row { display: flex; gap: 8px; align-items: flex-end; }
+  .bubble-row.me { justify-content: flex-end; }
+  .avatar { width: 26px; height: 26px; border-radius: 9px; background: #25324a; flex: 0 0 auto; }
+  .phone.light .avatar { background: #d9d0c3; }
+  .mini { max-width: 76%; padding: 9px 12px; border-radius: 14px; font-size: 12px; line-height: 1.5; background: #1a2436; color: #c8d4e8; border: 1px solid rgba(255,255,255,.06); }
+  .phone.light .mini { background: #fff; color: #3b4a63; border-color: rgba(0,0,0,.06); }
+  .bubble-row.me .mini { background: #30405f; color: #eaf1ff; border-color: transparent; }
+  .phone.light .bubble-row.me .mini { background: #22304f; color: #fff; }
+  .hint { margin-top: auto; text-align: center; color: rgba(255,255,255,.3); font-size: 11px; letter-spacing: .04em; }
+  .phone.light .hint { color: rgba(34,48,79,.4); }
+
+  /* 演示环境里把 fixed 改成容器内绝对定位 */
+  .phone .fg-pop { position: absolute; left: 50%; bottom: 20px; width: 322px; }
+  .phone .fg-bubble strong { font-size: 22px; }
+  .phone .fg-bubble span { font-size: 11.5px; }
+
+  .section-title { display: flex; align-items: baseline; gap: 12px; margin: 46px 0 16px; }
+  .section-title h2 { font-size: 17px; margin: 0; }
+  .section-title span { color: var(--muted); font-size: 12px; }
+  .assets { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  .asset { padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.02); }
+  .asset img { display: block; border-radius: 12px; }
+  .asset .cap { margin-top: 9px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+  .asset .cap b { color: var(--ink); font-weight: 600; display: block; font-size: 12px; }
+  .banner-card { padding: 0; overflow: hidden; }
+  .banner-card img { width: 100%; max-width: 560px; border-radius: 0; }
+  .banner-card .cap { padding: 0 14px 12px; }
+  .hero-strip { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-strip .asset img { width: 148px; height: 148px; object-fit: contain; }
+  .note { margin-top: 22px; color: var(--muted); font-size: 12px; line-height: 1.8; border-left: 2px solid rgba(255,143,163,.4); padding-left: 12px; }
+  .note code { color: #ffd166; }
+  /* 定格到指定时间点，便于截图/分镜 */
+  body.freeze .fg-scene,
+  body.freeze .fg-char,
+  body.freeze .fg-bubble,
+  body.freeze .fg-char-static,
+  body.freeze .fg-tail-wrap,
+  body.freeze .fg-idle,
+  body.freeze .fg-eyes-open,
+  body.freeze .fg-eyes-closed,
+  body.freeze .fg-sparkles,
+  body.freeze .fg-pop[data-state="success"] .fg-bubble::before {
+    animation-delay: calc(-1 * var(--freeze, 0s)) !important;
+    animation-play-state: paused !important;
+  }
+  body.freeze .phone .hint { opacity: 0; }
+  @media (max-width: 820px) {
+    body { padding: 24px 14px 44px; }
+    h1 { font-size: 24px; }
+    .phones { justify-content: center; }
+    .phone { width: min(360px, 92vw); }
+    .phone .fg-pop { width: min(322px, 84vw); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>肥鱼娘 <em>「做好啦」</em> 完成提醒</h1>
+      <p>DSH 回合结束时的手机页内弹窗动效预览 · 3s 时间轴 · 深/浅色适配 · 可静态替代</p>
+    </div>
+    <span class="badge"><i></i> 原创 SVG 素材 · 非官方角色</span>
+  </header>
+
+  <div class="toolbar">
+    <button class="primary" id="replay">重播动效</button>
+    <button id="loop">循环播放</button>
+    <button id="static">静态替代</button>
+    <button id="state">切换成功 / 失败</button>
+    <button id="hint">切换提示文案</button>
+  </div>
+
+  <div class="phones">
+    <div class="phone-block">
+      <div class="phone-label"><b>深色界面</b><span>DSH 默认主题</span></div>
+      <div class="phone" id="phone-dark">
+        <div class="screen">
+          <div class="chat">
+            <div class="bubble-row"><div class="avatar"></div><div class="mini">重构完成，跑一下测试？</div></div>
+            <div class="bubble-row me"><div class="mini">好，交给你了</div></div>
+            <div class="bubble-row"><div class="avatar"></div><div class="mini">收到，开始执行。</div></div>
+          </div>
+          <div class="hint">手机竖屏 · 底部安全区</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-block">
+      <div class="phone-label"><b>浅色界面</b><span>跟随系统 / 手动主题</span></div>
+      <div class="phone light" id="phone-light">
+        <div class="screen">
+          <div class="chat">
+            <div class="bubble-row"><div class="avatar"></div><div class="mini">重构完成，跑一下测试？</div></div>
+            <div class="bubble-row me"><div class="mini">好，交给你了</div></div>
+            <div class="bubble-row"><div class="avatar"></div><div class="mini">收到，开始执行。</div></div>
+          </div>
+          <div class="hint">手机竖屏 · 顶部刘海</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title"><h2>通知大图</h2><span>Android Web Push image · 1024×512</span></div>
+  <div class="assets">
+    <div class="asset banner-card">
+      <img src="../notification-banner-1024x512.png" alt="通知大图：肥鱼娘说做好啦" />
+      <div class="cap"><b>notification-banner-1024x512.png</b>深海军蓝 + 奶油气泡 + 珊瑚鱼娘，2:1 安全构图。</div>
+    </div>
+  </div>
+
+  <div class="section-title"><h2>图标与角色</h2><span>PWA / 通知图标 / 页内主视觉</span></div>
+  <div class="assets">
+    <div class="asset"><img src="../icon-512.png" width="128" height="128" alt="图标 512" /><div class="cap"><b>icon-512.png</b>512×512</div></div>
+    <div class="asset"><img src="../icon-192.png" width="96" height="96" alt="图标 192" /><div class="cap"><b>icon-192.png</b>192×192</div></div>
+    <div class="asset"><img src="../icon-maskable-512.png" width="128" height="128" alt="maskable 图标" /><div class="cap"><b>icon-maskable-512.png</b>安全区版</div></div>
+  </div>
+  <div class="hero-strip" style="margin-top:16px">
+    <div class="asset"><img src="../fishgirl-hero.png" alt="成功主视觉" /><div class="cap"><b>fishgirl-hero.png</b>1024×1024 透明</div></div>
+    <div class="asset"><img src="../fishgirl-hero-error.png" alt="失败表情" /><div class="cap"><b>fishgirl-hero-error.png</b>出错了</div></div>
+    <div class="asset"><img src="../fishgirl-hero-waiting.png" alt="等待表情" /><div class="cap"><b>fishgirl-hero-waiting.png</b>等待 / 思考</div></div>
+  </div>
+
+  <p class="note">
+    提示：本页的弹窗在真实页面中使用 <code>position: fixed</code> 贴底；演示为了放进手机框改为容器内绝对定位。
+    <code>prefers-reduced-motion: reduce</code> 或 <code>.fg-static</code> 下会直接显示静态图与静态气泡，不播放位移/缩放。
+  </p>
+</div>
+
+<script>
+  const DARK = document.getElementById('phone-dark');
+  const LIGHT = document.getElementById('phone-light');
+  const q = new URLSearchParams(location.search);
+  let state = q.get('state') === 'error' ? 'error' : 'success';
+  let looping = false;
+  let staticMode = false;
+
+  function markup(s) {
+    const bubble = s === 'success'
+      ? '<strong>做好啦</strong><span>任务完成 · 肥鱼娘来报喜</span>'
+      : '<strong>出错了</strong><span>再试一次，肥鱼娘陪着你</span>';
+    const char = s === 'success'
+      ? `<div class="fg-char" aria-hidden="true">
+           <div class="fg-layer fg-shadow"></div>
+           <div class="fg-tail-wrap"><div class="fg-layer fg-tail"></div></div>
+           <div class="fg-idle">
+             <div class="fg-layer fg-body"></div>
+             <div class="fg-layer fg-eyes fg-eyes-open"></div>
+             <div class="fg-layer fg-eyes fg-eyes-closed"></div>
+             <div class="fg-layer fg-sparkles"></div>
+           </div>
+         </div>`
+      : '<div class="fg-char-static" aria-hidden="true"></div>';
+    return `<div class="fg-pop" data-state="${s}" role="status" aria-live="polite">
+      <div class="fg-scene">${char}<div class="fg-bubble">${bubble}</div></div>
+    </div>`;
+  }
+
+  function mount(phone, themeClass) {
+    const old = phone.querySelector('.fg-pop');
+    if (old) old.remove();
+    const host = phone.querySelector('.screen');
+    host.insertAdjacentHTML('beforeend', markup(state));
+    const pop = host.querySelector('.fg-pop');
+    if (themeClass) pop.classList.add(themeClass);
+    if (looping) pop.classList.add('is-looping');
+    if (staticMode) pop.classList.add('fg-static');
+  }
+
+  function render() {
+    mount(DARK, 'fg-theme-dark');
+    mount(LIGHT, 'fg-theme-light');
+  }
+
+  document.getElementById('replay').addEventListener('click', render);
+  document.getElementById('loop').addEventListener('click', (e) => {
+    looping = !looping;
+    e.currentTarget.classList.toggle('on', looping);
+    e.currentTarget.textContent = looping ? '停止循环' : '循环播放';
+    render();
+  });
+  document.getElementById('static').addEventListener('click', (e) => {
+    staticMode = !staticMode;
+    e.currentTarget.classList.toggle('on', staticMode);
+    e.currentTarget.textContent = staticMode ? '恢复动效' : '静态替代';
+    render();
+  });
+  document.getElementById('state').addEventListener('click', () => {
+    state = state === 'success' ? 'error' : 'success';
+    render();
+  });
+  let hintIndex = 0;
+  const hints = [
+    '<strong>做好啦</strong><span>任务完成 · 肥鱼娘来报喜</span>',
+    '<strong>搞定啦</strong><span>这一回合结束，去看看结果吧</span>',
+    '<strong>完成啦</strong><span>代码已经写好，等你验收</span>'
+  ];
+  document.getElementById('hint').addEventListener('click', () => {
+    if (state !== 'success') { state = 'success'; render(); }
+    hintIndex = (hintIndex + 1) % hints.length;
+    document.querySelectorAll('.fg-pop[data-state="success"] .fg-bubble').forEach(el => { el.innerHTML = hints[hintIndex]; });
+  });
+
+  // 默认自动播放；?static=1 直接展示静态图，方便截图/无动效环境
+  if (q.get('static') === '1') {
+    staticMode = true;
+    document.getElementById('static').classList.add('on');
+    document.getElementById('static').textContent = '恢复动效';
+  }
+  const freeze = q.get('freeze');
+  if (freeze) {
+    document.body.classList.add('freeze');
+    document.body.style.setProperty('--freeze', freeze + 's');
+  }
+  render();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+  <linearGradient id="gSkin" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF4EB"/><stop offset="1" stop-color="#FFE8D8"/>
+  </linearGradient>
+  <linearGradient id="gHair" x1="0" y1="0" x2="0.15" y2="1">
+    <stop offset="0" stop-color="#4390C2"/><stop offset="1" stop-color="#245C88"/>
+  </linearGradient>
+  <linearGradient id="gHairSide" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4E9BCB"/><stop offset="1" stop-color="#2A6390"/>
+  </linearGradient>
+  <linearGradient id="gFin" x1="0" y1="0" x2="1" y2="0.3">
+    <stop offset="0" stop-color="#FFB9C8"/><stop offset="1" stop-color="#FF7F9E"/>
+  </linearGradient>
+  <linearGradient id="gTail" x1="0" y1="0" x2="0.8" y2="1">
+    <stop offset="0" stop-color="#FFC0CD"/><stop offset="0.55" stop-color="#FF8FA8"/><stop offset="1" stop-color="#FF7C9C"/>
+  </linearGradient>
+  <linearGradient id="gDress" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF8F0"/><stop offset="1" stop-color="#FFE7D3"/>
+  </linearGradient>
+  <radialGradient id="gIris" cx="0.42" cy="0.32" r="0.75">
+    <stop offset="0" stop-color="#4FA8D8"/><stop offset="0.55" stop-color="#2A6C9C"/><stop offset="1" stop-color="#173E60"/>
+  </radialGradient>
+  <radialGradient id="gGlow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FF8FA3" stop-opacity="0.5"/><stop offset="1" stop-color="#FF8FA3" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="10"/>
+  </filter>
+  <filter id="soft2" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+
+<g id="tail">
+  <!-- 尾柄：从裙后向下再向右回卷 -->
+  <path d="M 556 668 C 640 682 708 730 752 788 L 706 842 C 656 792 608 758 552 748 Z"
+        fill="url(#gTail)" stroke="#22304F" stroke-width="10" stroke-linejoin="round"/>
+  <!-- 尾鳍：两瓣流动扇形 -->
+  <path d="M 744 786 C 796 742 852 706 912 682 C 940 670 956 692 938 714
+           C 908 752 866 780 826 796 C 850 826 858 862 844 892
+           C 834 914 804 908 796 886 C 776 842 762 816 742 806 Z"
+        fill="url(#gTail)" stroke="#22304F" stroke-width="10" stroke-linejoin="round"/>
+  <!-- 尾鳍内缘高光 -->
+  <path d="M 796 782 C 848 750 896 720 926 696" fill="none" stroke="#FFF1E6"
+        stroke-width="11" stroke-linecap="round" opacity="0.75"/>
+  <path d="M 812 830 C 834 856 848 880 854 894" fill="none" stroke="#FFF1E6"
+        stroke-width="9" stroke-linecap="round" opacity="0.7"/>
+  <g stroke="#E06381" stroke-width="5" stroke-linecap="round" opacity="0.8" fill="none">
+    <path d="M 786 796 C 840 762 890 730 924 704"/>
+    <path d="M 788 804 C 834 792 878 778 912 760"/>
+    <path d="M 790 812 C 818 840 838 868 850 890"/>
+    <path d="M 770 802 C 786 824 796 848 802 872"/>
+  </g>
+  <!-- 尾柄鳞片 -->
+  <g fill="#FFF1E6" opacity="0.55">
+    <path d="M 586 694 q 22 -16 44 0 q -22 16 -44 0 Z"/>
+    <path d="M 618 716 q 24 -16 48 0 q -24 16 -48 0 Z"/>
+    <path d="M 650 740 q 24 -16 48 0 q -24 16 -48 0 Z"/>
+  </g>
+</g>
+</svg>

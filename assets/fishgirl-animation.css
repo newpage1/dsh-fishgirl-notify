@@ -1,0 +1,353 @@
+/* ==========================================================================
+   肥鱼娘 · 完成提醒页内弹窗动效
+   dsh-finish-notify / 视觉规范配套实现（可直接复制进插件样式）
+
+   时间轴（默认 3s，播放一次；加 .is-looping 可循环）：
+     0.00–0.63s  弹跳出场（回弹缓动）
+     0.36–0.78s  「做好啦」气泡弹出
+     0.8–2.3s    眨眼 / 摆尾 / 星星闪烁
+     2.4–3.0s    淡出并轻微缩小
+
+   结构（.fg-char 内六层 PNG 均为 1024×1024 同画布，叠放即对齐）：
+     .fg-pop[data-state="success"]
+       .fg-scene
+         .fg-char
+           .fg-layer.fg-shadow
+           .fg-tail-wrap > .fg-layer.fg-tail
+           .fg-idle
+             .fg-layer.fg-body
+             .fg-layer.fg-eyes.fg-eyes-open
+             .fg-layer.fg-eyes.fg-eyes-closed
+             .fg-layer.fg-sparkles
+         .fg-bubble > strong + span
+     .fg-pop[data-state="error"] 使用单张 fishgirl-hero-error.png + 抖动
+
+   适配：深/浅色由 prefers-color-scheme 自动切换，也可给 .fg-pop 加
+   .fg-theme-light / .fg-theme-dark 强制；reduced-motion 下自动退化为静态图。
+   ========================================================================== */
+
+.fg-pop {
+  --fg-duration: 3s;
+  --fg-text: #fff7ec;
+  --fg-sub: rgba(255, 247, 236, 0.66);
+  --fg-card: rgba(18, 26, 40, 0.94);
+  --fg-line: rgba(255, 255, 255, 0.12);
+  --fg-glow: rgba(255, 127, 158, 0.35);
+  --fg-ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fg-ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 2147483000;
+  width: min(92vw, 380px);
+  aspect-ratio: 16 / 10;
+  transform: translateX(-50%);
+  color: var(--fg-text);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: none;
+}
+
+.fg-pop.fg-theme-light,
+.fg-pop[data-theme="light"] {
+  --fg-text: #22304f;
+  --fg-sub: rgba(34, 48, 79, 0.6);
+  --fg-card: rgba(255, 247, 238, 0.96);
+  --fg-line: rgba(34, 48, 79, 0.1);
+  --fg-glow: rgba(255, 127, 158, 0.42);
+}
+
+.fg-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 100% at 18% 0%, rgba(255, 157, 176, 0.18), transparent 58%),
+    radial-gradient(90% 80% at 100% 100%, rgba(77, 107, 254, 0.2), transparent 60%),
+    var(--fg-card);
+  border: 1px solid var(--fg-line);
+  box-shadow:
+    0 18px 40px -12px rgba(8, 14, 24, 0.55),
+    0 2px 10px rgba(8, 14, 24, 0.25),
+    0 0 0 6px rgba(255, 255, 255, 0.03) inset;
+  overflow: visible;
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  animation: fg-card-cycle var(--fg-duration) ease-out both;
+  will-change: opacity, transform;
+}
+
+/* 顶部一缕珊瑚高光，深色界面上更精神 */
+.fg-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(120deg, rgba(255, 157, 176, 0.6), transparent 38%, rgba(127, 227, 216, 0.28));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* -------- 角色 ---------------------------------------------------------- */
+.fg-char {
+  position: absolute;
+  left: -2%;
+  bottom: -6%;
+  width: 58%;
+  aspect-ratio: 1;
+  transform-origin: 50% 82%;
+  animation: fg-char-cycle var(--fg-duration) var(--fg-ease-pop) both;
+  will-change: transform, opacity;
+}
+
+.fg-char-static {
+  position: absolute;
+  left: -2%;
+  bottom: -6%;
+  width: 58%;
+  aspect-ratio: 1;
+  background: url("./fishgirl-hero-error.png") center / contain no-repeat;
+  filter: drop-shadow(0 8px 16px rgba(10, 16, 28, 0.28));
+  animation: fg-error-cycle var(--fg-duration) var(--fg-ease-soft) both;
+}
+
+.fg-layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+}
+
+.fg-shadow { background-image: url("./fishgirl-shadow.png"); }
+
+.fg-tail-wrap {
+  position: absolute;
+  inset: 0;
+  transform-origin: 55% 68%;
+  animation: fg-tail-sway 1.6s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.fg-tail { background-image: url("./fishgirl-tail.png"); }
+
+.fg-idle {
+  position: absolute;
+  inset: 0;
+  animation: fg-bob 1.4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.fg-body { background-image: url("./fishgirl-body.png"); }
+.fg-eyes { background-size: contain; }
+.fg-eyes-open {
+  background-image: url("./fishgirl-eyes-open.png");
+  animation: fg-blink-open 2.4s steps(1, end) infinite;
+}
+.fg-eyes-closed {
+  background-image: url("./fishgirl-eyes-closed.png");
+  opacity: 0;
+  animation: fg-blink 2.4s steps(1, end) infinite;
+}
+.fg-sparkles {
+  background-image: url("./fishgirl-sparkles.png");
+  animation: fg-twinkle 2.2s ease-in-out infinite;
+}
+
+/* -------- 气泡 ---------------------------------------------------------- */
+.fg-bubble {
+  position: absolute;
+  right: 2.5%;
+  top: 13%;
+  width: 41%;
+  min-height: 92px;
+  padding: 16px 16px 14px;
+  box-sizing: border-box;
+  border-radius: 22px 22px 22px 8px;
+  background: #fff7ec;
+  color: #22304f;
+  box-shadow:
+    0 10px 24px -10px rgba(8, 14, 24, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  transform-origin: 8% 78%;
+  animation: fg-bubble-cycle var(--fg-duration) var(--fg-ease-pop) both;
+  will-change: transform, opacity;
+}
+
+/* 气泡小尾巴：朝向左下方的鱼娘 */
+.fg-bubble::after {
+  content: "";
+  position: absolute;
+  left: -12px;
+  bottom: 12px;
+  width: 26px;
+  height: 30px;
+  background: #fff7ec;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  border-radius: 0 0 0 6px;
+  transform: rotate(6deg);
+}
+
+.fg-bubble strong {
+  display: block;
+  font-size: clamp(20px, 5.6vw, 24px);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: #22304f;
+}
+
+.fg-bubble span {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #5b6b85;
+  letter-spacing: 0.02em;
+}
+
+.fg-pop[data-state="error"] .fg-bubble {
+  border-radius: 22px 22px 22px 8px;
+  background: #fff4f0;
+}
+.fg-pop[data-state="error"] .fg-bubble::after { background: #fff4f0; }
+.fg-pop[data-state="error"] .fg-bubble strong { color: #b23a52; }
+
+/* 成功时的小闪光点缀（纯 CSS，不占图层） */
+.fg-pop[data-state="success"] .fg-bubble::before {
+  content: "✦";
+  position: absolute;
+  right: 10px;
+  top: -12px;
+  font-size: 18px;
+  color: #ffd166;
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.7);
+  animation: fg-star-pop 2.2s ease-in-out infinite;
+}
+
+/* -------- 关键帧 -------------------------------------------------------- */
+@keyframes fg-card-cycle {
+  0%   { opacity: 0; transform: translateY(12px); }
+  8%   { opacity: 1; transform: translateY(0); }
+  86%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(5px); }
+}
+
+@keyframes fg-char-cycle {
+  0%   { opacity: 0; transform: translateY(30px) scale(0.76); }
+  9%   { opacity: 1; transform: translateY(-12px) scale(1.07); }
+  15%  { transform: translateY(2px) scale(0.97); }
+  21%  { transform: translateY(0) scale(1); }
+  76%  { opacity: 1; transform: translateY(0) scale(1); }
+  86%  { opacity: 1; transform: translateY(-4px) scale(1.02); }
+  100% { opacity: 0; transform: translateY(8px) scale(0.93); }
+}
+
+@keyframes fg-bubble-cycle {
+  0%, 12% { opacity: 0; transform: translateY(8px) scale(0.7); }
+  20%     { opacity: 1; transform: translateY(-3px) scale(1.05); }
+  27%     { opacity: 1; transform: translateY(0) scale(1); }
+  74%     { opacity: 1; transform: translateY(0) scale(1); }
+  84%     { opacity: 0; transform: translateY(-5px) scale(0.96); }
+  100%    { opacity: 0; transform: translateY(-5px) scale(0.96); }
+}
+
+@keyframes fg-tail-sway {
+  0%   { transform: rotate(-3.5deg); }
+  100% { transform: rotate(3.5deg); }
+}
+
+@keyframes fg-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+@keyframes fg-blink {
+  0%, 85%   { opacity: 0; }
+  88%, 92%  { opacity: 1; }
+  95%, 100% { opacity: 0; }
+}
+
+/* 眨眼时同时隐藏睁眼图层，避免透明底闭眼弧线叠在睁眼之上 */
+@keyframes fg-blink-open {
+  0%, 85%   { opacity: 1; }
+  88%, 92%  { opacity: 0; }
+  95%, 100% { opacity: 1; }
+}
+
+@keyframes fg-twinkle {
+  0%, 100% { opacity: 0.55; transform: scale(0.985); }
+  50%      { opacity: 1; transform: scale(1.015); }
+}
+
+@keyframes fg-star-pop {
+  0%, 100% { opacity: 0.35; transform: scale(0.85) rotate(0deg); }
+  50%      { opacity: 1; transform: scale(1.15) rotate(18deg); }
+}
+
+@keyframes fg-error-cycle {
+  0%   { opacity: 0; transform: translateY(18px) scale(0.82); }
+  10%  { opacity: 1; transform: translateY(0) scale(1.04); }
+  16%  { transform: translateX(0) scale(1); }
+  20%  { transform: translateX(-7px) scale(1); }
+  24%  { transform: translateX(6px) scale(1); }
+  28%  { transform: translateX(-4px) scale(1); }
+  32%  { transform: translateX(0) scale(1); }
+  76%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(6px) scale(0.95); }
+}
+
+/* 循环演示：整条 3s 时间轴重复；真实通知建议只播一次 */
+.fg-pop.is-looping .fg-scene,
+.fg-pop.is-looping .fg-char,
+.fg-pop.is-looping .fg-bubble,
+.fg-pop.is-looping .fg-char-static {
+  animation-iteration-count: infinite;
+}
+
+/* 手动静态替代：宿主可加 .fg-static 或由 reduced-motion 触发 */
+.fg-pop.fg-static .fg-scene,
+.fg-pop.fg-static .fg-char,
+.fg-pop.fg-static .fg-bubble,
+.fg-pop.fg-static .fg-char-static {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+.fg-pop.fg-static .fg-char { left: -2%; bottom: -7%; }
+.fg-pop.fg-static .fg-eyes-open { animation: none; opacity: 1; }
+.fg-pop.fg-static .fg-eyes-closed { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fg-char,
+  .fg-bubble,
+  .fg-char-static,
+  .fg-tail-wrap,
+  .fg-idle,
+  .fg-eyes-open,
+  .fg-eyes-closed,
+  .fg-sparkles,
+  .fg-pop[data-state="success"] .fg-bubble::before {
+    animation: none !important;
+  }
+  .fg-scene,
+  .fg-char,
+  .fg-bubble,
+  .fg-char-static { animation: none !important; opacity: 1; transform: none; }
+  .fg-eyes-open { animation: none !important; opacity: 1 !important; }
+  .fg-eyes-closed { display: none; }
+  .fg-shadow { opacity: 0.85; }
+}
+
+/* 小屏（iPhone SE 等）微调 */
+@media (max-width: 380px) {
+  .fg-pop { width: min(94vw, 340px); }
+  .fg-bubble { padding: 13px 13px 11px; border-radius: 18px 18px 18px 7px; }
+  .fg-bubble strong { font-size: 20px; }
+  .fg-bubble span { font-size: 11px; }
+}

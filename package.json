@@ -1,0 +1,63 @@
+{
+  "name": "dsh-fishgirl-notify",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "DSH 完成提醒：回合结束时由「肥鱼娘」在手机弹出「做好啦」通知（飞书 / ntfy / Web Push），并在页面内播放可爱动效。",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib",
+    "assets",
+    "locale",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "LICENSE",
+    "docs/使用说明.md",
+    "docs/技术方案.md"
+  ],
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.1-rc.2"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh": ">=0.2.1-rc.2"
+  },
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "notification",
+    "feishu",
+    "ntfy",
+    "web-push",
+    "fishgirl"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/newpage1/dsh-fishgirl-notify.git"
+  },
+  "homepage": "https://github.com/newpage1/dsh-fishgirl-notify",
+  "bugs": {
+    "url": "https://github.com/newpage1/dsh-fishgirl-notify/issues"
+  },
+  "author": "newpage1"
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Fishgirl Finish Notify",
+    "description": "When a DSH turn finishes, the fishgirl sends a \"done!\" push notification to your phone (Feishu / ntfy / Web Push) and plays a cute in-page popup animation."
+  }
+}
