@@ -1,4 +1,4 @@
-# dsh-finish-notify 装载补丁：安装本包后由 Host 合入 profile patch 层。
+# dsh-fishgirl-notify 装载补丁：安装本包后由 Host 合入 profile patch 层。
 # config 下的键即《docs/技术方案.md》§10.1 配置表的运行时子集；
 # 全部可省略，非法值会回退默认并在 /api/finish-notify/diagnostics 可诊断。
 - insert:

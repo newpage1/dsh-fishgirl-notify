@@ -36,11 +36,11 @@ dsh plugin --profile web add /absolute/path/to/dsh-fishgirl-notify
 ## 快速上手
 
 ```
-# 自测（零外网依赖，27 项断言）
+# 自测（零外网依赖，34 项断言）
 node test/run-tests.mjs
 
-# 安装（由 DSH plugin_manager 以绝对路径执行）
-# 见 docs/使用说明.md
+# 安装（DSH >= 0.2.1-rc.2）
+dsh plugin --profile web add github:newpage1/dsh-fishgirl-notify
 ```
 
 配置与手机授权（鸿蒙/Android/iOS）见 **docs/使用说明.md**。
