@@ -1,6 +1,6 @@
 {
   "name": "dsh-fishgirl-notify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "DSH 完成提醒：回合结束时由「肥鱼娘」在手机弹出「做好啦」通知（飞书 / ntfy / Web Push），并在页面内播放可爱动效。",
   "exports": {
