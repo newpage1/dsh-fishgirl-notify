@@ -1,5 +1,7 @@
 # dsh-fishgirl-notify · 肥鱼娘完成提醒
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com/p/newpage1/dsh-fishgirl-notify/)
+
 DSH 顶层会话完成一轮任务时：
 
 - 向手机推送「肥鱼娘」通知（**飞书群机器人 / 飞书应用 / ntfy / Web Push** 多通道，可插拔、失败自动降级）；
